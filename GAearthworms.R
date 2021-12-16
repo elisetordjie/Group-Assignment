@@ -35,6 +35,13 @@ hsd <- agricolae::HSD.test(Anova.Assay1M, "Treatments")
 levels(factor(Assay_1$Treatments))
 hsd
 plot(hsd)
+library(ggplot2)
+g <- ggplot(Assay_1, aes(x = Treatments, y = Mortality, 
+                      fill = Treatments))
+
+g + geom_boxplot()
+
+
 
 
 
