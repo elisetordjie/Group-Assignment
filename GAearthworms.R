@@ -29,8 +29,9 @@ Tukey1
 library(agricolae)
 hsd <- agricolae::HSD.test(Anova.Assay1M, "Treatments")
 
-letters.ordered <- hsd$groups$groups[order(row.names(hsd$groups))]
+
 
 levels(factor(Assay_1$Treatments))
-agricolae::HSD.test()
+hsd
+plot(hsd)
 
