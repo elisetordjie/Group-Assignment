@@ -1,7 +1,7 @@
 library("readxl")
-Assay_1 <- read.csv("C:\\Users\\ELIKPLIM\\Downloads\\Assay 1.csv")
-Assay_2 <- read.csv("C:\\Users\\ELIKPLIM\\Downloads\\Assay_2.csv")
-Assay_3 <- read.csv("C:\\Users\\ELIKPLIM\\Downloads\\Assay 3.csv")
+Assay_1 <- read.csv("data/Assay 1.csv")
+Assay_2 <- read.csv("data/Assay 2.csv")
+Assay_3 <- read.csv("data/Assay 3.csv")
 names(Assay_1) <- c("Treatments","Replication","Survivals","AdultNO",      
                    "Adult","Mortality")
                   
