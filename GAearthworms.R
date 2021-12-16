@@ -13,6 +13,7 @@ hist(Assay_1$Mortality)
 hist(Assay_2$Mortality)
 hist(Assay_3$Mortality)
 
+#ASSAY 1
 Assay_1$TMortality <- asin(sqrt(Assay_1$Mortality))
 
 Assay_1$TMortality
@@ -34,4 +35,11 @@ hsd <- agricolae::HSD.test(Anova.Assay1M, "Treatments")
 levels(factor(Assay_1$Treatments))
 hsd
 plot(hsd)
+library(ggplot2)
+g <- ggplot(Assay_1, aes(x = Treatments, y = Mortality, 
+                      fill = Treatments))
+
+g + geom_boxplot()
+
+
 
