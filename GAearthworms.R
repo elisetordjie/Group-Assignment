@@ -36,7 +36,7 @@ levels(factor(Assay_1$Treatments))
 hsd
 plot(hsd)
 
-#ASSAY 2
+
 
 
 
