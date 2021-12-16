@@ -1,0 +1,91 @@
+﻿Treatments,Replication,Survivals,AdultNO,Adult (%),Mortality (100%)
+C1,1,6,0,0,0
+C1,2,6,0,0,0
+C1,3,5,0,0,0.166666667
+C1,4,4,0,0,0.333333333
+C1,5,6,0,0,0
+C1,6,4,0,0,0.333333333
+C1,7,5,0,0,0.166666667
+C1,8,5,0,0,0.166666667
+C1,9,6,0,0,0
+C1,10,6,0,0,0
+C1,11,3,0,0,0.5
+C1,12,3,0,0,0.5
+C1,13,4,0,0,0.333333333
+C1,14,5,0,0,0.166666667
+C1,15,2,0,0,0.666666667
+C2,1,5,0,0,0.166666667
+C2,2,6,0,0,0
+C2,3,6,0,0,0
+C2,4,6,0,0,0
+C2,5,6,0,0,0
+C2,6,6,0,0,0
+C2,7,6,0,0,0
+C2,8,6,0,0,0
+C2,9,6,0,0,0
+C2,10,6,0,0,0
+C2,11,6,0,0,0
+C2,12,6,0,0,0
+C2,13,6,0,0,0
+C2,14,6,0,0,0
+C2,15,6,0,0,0
+C3,1,4,6,100,0.333333333
+C3,2,6,6,100,0
+C3,3,4,6,100,0.333333333
+C3,4,6,6,100,0
+C3,5,5,6,100,0.166666667
+C3,6,6,6,100,0
+C3,7,5,6,100,0.166666667
+C3,8,6,6,100,0
+C3,9,6,6,100,0
+C3,10,4,6,100,0.333333333
+C3,11,3,6,100,0.5
+C3,12,6,6,100,0
+C3,13,6,6,100,0
+C3,14,6,0,0,0
+C3,15,6,0,0,0
+B. bassiana ,1,1,0,0,0.833333333
+B. bassiana ,2,2,0,0,0.666666667
+B. bassiana ,3,3,0,0,0.5
+B. bassiana ,4,1,0,0,0.833333333
+B. bassiana ,5,0,0,0,1
+B. bassiana ,6,3,0,0,0.5
+B. bassiana ,7,5,0,0,0.166666667
+B. bassiana ,8,1,0,0,0.833333333
+B. bassiana ,9,1,0,0,0.833333333
+B. bassiana ,10,1,0,0,0.833333333
+B. bassiana ,11,2,0,0,0.666666667
+B. bassiana ,12,2,0,0,0.666666667
+B. bassiana ,13,1,0,0,0.833333333
+B. bassiana ,14,0,0,0,1
+B. bassiana ,15,2,0,0,0.666666667
+Mycotized millet 15g,1,1,0,0,0.833333333
+Mycotized millet 15g,2,4,0,0,0.333333333
+Mycotized millet 15g,3,2,0,0,0.666666667
+Mycotized millet 15g,4,1,0,0,0.833333333
+Mycotized millet 15g,5,0,0,0,1
+Mycotized millet 15g,6,0,0,0,1
+Mycotized millet 15g,7,2,0,0,0.666666667
+Mycotized millet 15g,8,2,0,0,0.666666667
+Mycotized millet 15g,9,0,0,0,1
+Mycotized millet 15g,10,1,0,0,0.833333333
+Mycotized millet 15g,11,0,0,0,1
+Mycotized millet 15g,12,3,0,0,0.5
+Mycotized millet 15g,13,0,0,0,1
+Mycotized millet 15g,14,3,0,0,0.5
+Mycotized millet 15g,15,1,0,0,0.833333333
+Mycotized millet 25g,1,3,0,0,0.5
+Mycotized millet 25g,2,0,0,0,1
+Mycotized millet 25g,3,4,0,0,0.333333333
+Mycotized millet 25g,4,0,0,0,1
+Mycotized millet 25g,5,0,0,0,1
+Mycotized millet 25g,6,0,0,0,1
+Mycotized millet 25g,7,3,0,0,0.5
+Mycotized millet 25g,8,1,0,0,0.833333333
+Mycotized millet 25g,9,0,0,0,1
+Mycotized millet 25g,10,2,0,0,0.666666667
+Mycotized millet 25g,11,4,0,0,0.333333333
+Mycotized millet 25g,12,1,0,0,0.833333333
+Mycotized millet 25g,13,2,0,0,0.666666667
+Mycotized millet 25g,14,0,0,0,1
+Mycotized millet 25g,15,1,0,0,0.833333333
