@@ -48,6 +48,8 @@ levels(factor(Assay_1$Treatments))
 hsd
 plot(hsd)
 
+
+
 #Despite transforming the mortality data the article reported graphics of the untransformed data
 dataA1 <- Assay_1 %>% select(Treatments, Mortality) 
 my_sumA1 <- dataA1 %>%
@@ -66,9 +68,15 @@ ggplot(my_sumA1) +
   ggtitle("Mortality of Pheritimoid Earthworms in Assay 1 (+/- Standard Error)")
 
 
+
 #ASSAY 2
 Assay_2$TMortality <- asin(sqrt(Assay_2$Mortality))
 hist(Assay_2$TMortality)
+g <- ggplot(Assay_2, aes(x = Treatments, y = Mortality, 
+                         fill = Treatments))
+
+g + geom_boxplot()
+
 ks.test(Assay_2$TMortality, "pnorm" )
 #transformation did not make the mortality data normal
 
@@ -108,6 +116,7 @@ ggplot(my_sumA2) +
 #ASSAY3
 Assay_3$TMortality <- asin(sqrt(Assay_3$PMortality))
 hist(Assay_3$TMortality)
+
 ks.test(Assay_3$TMortality, "pnorm" )
 #Transformation did not make the data normal.
 
@@ -142,9 +151,15 @@ ggplot(my_sumA3) +
   geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="red4", alpha=0.5) +
   geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
   ggtitle("Mortality of Pheritimoid Earthworms in Assay3(+/- Standard Error)")
-#THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY AFTER THE TRANSFORMATION 
+#THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY DISTRIBUTED AFTER THE TRANSFORMATION 
 #HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
 #IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
 
+#NON PARAMETRIC TEST ASSAY 1
+KAssay1 <- kruskal.test(Mortality ~ Treatments, data = Assay_1)
+KAssay1 <- agricolae::kruskal(Assay_1$Mortality, Assay_1$Treatments)
+letters.ordered <- KAssay1$groups$groups[order(row.names(KAssay1$groups))]
+letters.ordered
+plot(KAssay1)
 
 
