@@ -48,6 +48,24 @@ levels(factor(Assay_1$Treatments))
 hsd
 plot(hsd)
 
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+dataA1 <- Assay_1 %>% select(Treatments, Mortality) 
+my_sumA1 <- dataA1 %>%
+  group_by(Treatments) %>%
+  summarise( 
+    n=n(),
+  Mean.Mortality=mean(Mortality),
+    sd=sd(Mortality)
+  ) %>%
+  mutate( se=sd/sqrt(n))  %>%
+  mutate( ic=se * qt((1-0.05)/2 + .5, n-1))
+
+ggplot(my_sumA1) +
+  geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="midnightblue", alpha=0.5) +
+  geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
+  ggtitle("Mortality of Pheritimoid Earthworms in Assay 1 +/- Standard Error")
+
+
 #ASSAY 2
 Assay_2$TMortality <- asin(sqrt(Assay_2$Mortality))
 hist(Assay_2$TMortality)
