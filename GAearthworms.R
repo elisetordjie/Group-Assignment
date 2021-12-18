@@ -86,6 +86,25 @@ levels(factor(Assay_2$Treatments))
 hsd2
 plot(hsd2)
 
+#Data reported in paper was the untransformed data 
+dataA2 <- Assay_2 %>% select(Treatments, Mortality) 
+my_sumA2 <- dataA2 %>%
+  group_by(Treatments) %>%
+  summarise( 
+    n=n(),
+    Mean.Mortality=mean(Mortality),
+    sd=sd(Mortality)
+  ) %>%
+  mutate( se=sd/sqrt(n))  %>%
+  mutate( ic=se * qt((1-0.05)/2 + .5, n-1))
+
+#Graph of mortality in Assay2 using data with no transformed as in the paper.
+ggplot(my_sumA2) +
+  geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="firebrick4", alpha=0.5) +
+  geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
+  ggtitle("Mortality of Pheritimoid Earthworms in Assay 2 +/- Standard Error")
+
+
 #ASSAY3
 Assay_3$TMortality <- asin(sqrt(Assay_3$PMortality))
 hist(Assay_3$TMortality)
@@ -105,6 +124,27 @@ hsd3
 levels(factor(Assay_3$Treatments))
 hsd3
 plot(hsd3)
+
+#Data reported in paper was the untransformed data 
+dataA3 <- Assay_3 %>% select(Treatments, PMortality) 
+my_sumA3 <- dataA3 %>%
+  group_by(Treatments) %>%
+  summarise( 
+    n=n(),
+    Mean.Mortality=mean(PMortality),
+    sd=sd(PMortality)
+  ) %>%
+  mutate( se=sd/sqrt(n))  %>%
+  mutate( ic=se * qt((1-0.05)/2 + .5, n-1))
+
+#Graph of mortality in Assay3 using data with no transformed as in the paper.
+ggplot(my_sumA3) +
+  geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="red4", alpha=0.5) +
+  geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
+  ggtitle("Mortality of Pheritimoid Earthworms in Assay 2 +/- Standard Error")
 #THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY AFTER THE TRANSFORMATION 
 #HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
 #IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
+
+
+
