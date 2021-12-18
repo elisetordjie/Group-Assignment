@@ -148,9 +148,11 @@ my_sumA3 <- dataA3 %>%
 
 #Graph of mortality in Assay3 using data with no transformed as in the paper.
 ggplot(my_sumA3) +
-  geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="red4", alpha=0.5) +
-  geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
-  ggtitle("Mortality of Pheritimoid Earthworms in Assay3(+/- Standard Error)")
+  geom_bar(aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="red4", alpha=0.5) +
+  geom_errorbar(aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
+  ggtitle("Mortality of Pheritimoid Earthworms in Assay 3 (+/- Standard Error)")
+
+
 #THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY DISTRIBUTED AFTER THE TRANSFORMATION 
 #HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
 #IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
@@ -161,5 +163,27 @@ KAssay1 <- agricolae::kruskal(Assay_1$Mortality, Assay_1$Treatments)
 letters.ordered <- KAssay1$groups$groups[order(row.names(KAssay1$groups))]
 letters.ordered
 plot(KAssay1)
+#There is no difference between results obtained with the arcsine transformed data
+#and those obtained using the kruskal wallis test in Assay 1.
+
+#NON PARAMETRIC ASSAY 2
+KAssay2 <- kruskal.test(Mortality ~ Treatments, data = Assay_2)
+KAssay2 <- agricolae::kruskal(Assay_2$Mortality, Assay_2$Treatments)
+letters.ordered <- KAssay2$groups$groups[order(row.names(KAssay2$groups))]
+letters.ordered
+plot(KAssay2)
+#The Kruskal wallis test shows the differences between the various treatments
+#these differencesare not visible using the tukey HSD.
+
+#NON PARAMETRIC ASSAY 3
+KAssay3 <- kruskal.test(PMortality ~ Treatments, data = Assay_3)
+KAssay3 <- agricolae::kruskal(Assay_3$PMortality, Assay_3$Treatments)
+letters.ordered <- KAssay3$groups$groups[order(row.names(KAssay1$groups))]
+letters.ordered
+plot(KAssay3)
+# For Assay3, the tukey HSD shows more differences between the means of the
+#various treatments than the kruskal wallis test.
+
+
 
 
