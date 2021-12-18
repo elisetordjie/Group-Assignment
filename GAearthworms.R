@@ -173,7 +173,7 @@ letters.ordered <- KAssay2$groups$groups[order(row.names(KAssay2$groups))]
 letters.ordered
 plot(KAssay2)
 #The Kruskal wallis test shows the differences between the various treatments
-#these differencesare not visible using the tukey HSD.
+#these differences are not visible using the tukey HSD.
 
 #NON PARAMETRIC ASSAY 3
 KAssay3 <- kruskal.test(PMortality ~ Treatments, data = Assay_3)
