@@ -141,7 +141,7 @@ my_sumA3 <- dataA3 %>%
 ggplot(my_sumA3) +
   geom_bar( aes(x=Treatments, y=Mean.Mortality), stat="identity", fill="red4", alpha=0.5) +
   geom_errorbar( aes(x=Treatments, ymin=Mean.Mortality-se, ymax=Mean.Mortality+se), width=0.4, colour="orange", alpha=0.9, size=1) +
-  ggtitle("Mortality of Pheritimoid Earthworms in Assay 2 +/- Standard Error")
+  ggtitle("Mortality of Pheritimoid Earthworms in Assay 3+/- Standard Error")
 #THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY AFTER THE TRANSFORMATION 
 #HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
 #IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
