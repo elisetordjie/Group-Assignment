@@ -27,6 +27,7 @@ HA : There is a significant difference between earthworms treated with *B.bassia
 #### **VARIABLES**
 
 Dependent variables: Mortality, Survival 
+
 Independent variables: Treatments, Time 
 
 #### **TREATMENTS**
@@ -115,14 +116,32 @@ cap <- paste0(
 plot(hsd)
 ```
 
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 3**", ":Mortality of the various treatments in Assay 1 (+/- SE) ") 
+
+```
+
 #Despite transforming the mortality data the article reported graphics of the untransformed data
 ```{r, echo = FALSE, fig.cap=cap}
+data_summary <- aggregate(Mortality ~ Treatments, data = Assay_1,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$Mortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_1, aes(Mortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
 ```
+
 
 ## **ASSAY 2**
 ```{r, echo = FALSE, fig.cap=cap}
 cap <- paste0(
-    "**Figure 3**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms") 
+    "**Figure 4**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms") 
 hist(Assay_2$Mortality) #Mortality of Assay 2 prior to transformation
 ```
 
@@ -146,7 +165,7 @@ hsd2 <- agricolae::HSD.test(Anova.Assay2M, "Treatments")
 
 ```{r, echo=FALSE,fig.cap=cap}
 cap <- paste0(
-    "**Figure 4**", ": Effect of different treatments on Pheritimoid earthworm mortality in Assay 2. ",
+    "**Figure 5**", ": Effect of different treatments on Pheritimoid earthworm mortality in Assay 2. ",
     " Letters indicates Tukeys HSD posthoc comparisons. ",
     " Same letter indicates non-significant differences. ")
     
@@ -155,11 +174,32 @@ plot(hsd2)
 
 ```
 
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 6**", ": Mortality of earthworms in the various treatments(+/-SE)")
+```
+
+```{r, echo=FALSE, fig.cap=cap}
+data_summary <- aggregate(Mortality ~ Treatments, data = Assay_2,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$Mortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_2, aes(Mortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
+
+```
 
 ## **ASSAY 3**
 ```{r, echo=FALSE, fig.cap=cap}
 cap <- paste0(
-    "**Figure 5**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+    "**Figure 7**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
 hist(Assay_3$PMortality) #Mortality of Assay 3 prior to transformation
 ```
 
@@ -186,10 +226,33 @@ hsd3 <- agricolae::HSD.test(Anova.Assay3M, "Treatments")
 
 ```{r, echo=FALSE, fig.cap=cap}
 cap <- paste0(
-    "**Figure 6**", ": Effect of different treatments on Pheritimoid earthworm mortality. ",
+    "**Figure 8**", ": Effect of different treatments on Pheritimoid earthworm mortality. ",
     " Letters indicates Tukeys HSD posthoc comparisons. ",
     " Same letter indicates non-significant differences. ")
   plot(hsd3)
+
+```
+
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+
+```{r, echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 9**", ": Mortality of Earthworms in Various Treatments (+/-)")
+```
+
+```{r,echo=FALSE,fig.cap= cap}
+data_summary <- aggregate(PMortality ~ Treatments, data = Assay_3,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$PMortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_3, aes(PMortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
+
 
 ```
 
@@ -212,7 +275,7 @@ KAssay1 <- agricolae::kruskal(Assay_1$Mortality, Assay_1$Treatments)
 
 ```{r, echo=FALSE, fig.cap=cap}
 cap <- paste0(
-    "**Figure 6**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 1") 
+    "**Figure 10**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 1") 
 plot(KAssay1)
 #There is no difference between results obtained with the arcsine transformed data
 #and those obtained using the kruskal wallis test in Assay 1.
@@ -228,7 +291,7 @@ KAssay2 <- agricolae::kruskal(Assay_2$Mortality, Assay_2$Treatments)
 
 ```{r, echo=FALSE, fig.cap=cap}
 cap <- paste0(
-    "**Figure 7**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 2") 
+    "**Figure 11**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 2") 
 plot(KAssay2)
 #The Kruskal wallis test shows the differences between the various treatments
 #these differences are not visible using the tukey HSD
@@ -243,7 +306,7 @@ KAssay3 <- agricolae::kruskal(Assay_3$PMortality, Assay_3$Treatments)
 
 ```{r,echo=FALSE,fig.cap=cap}
 cap <- paste0(
-    "**Figure 8**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+    "**Figure 12**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
 plot(KAssay3)
 # For Assay3, the tukey HSD shows more differences between the means of the
 #various treatments than the kruskal wallis test.
