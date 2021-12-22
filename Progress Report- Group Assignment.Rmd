@@ -29,6 +29,24 @@ HA : There is a significant difference between earthworms treated with *B.bassia
 Dependent variables: Mortality, Survival 
 Independent variables: Treatments, Time 
 
+#### **TREATMENTS**
+
+C1:Water
+
+C2:Millet 15 grams
+
+C3:Millet 25 grams
+
+B. bassiana 108 conidia/mL
+
+Mycoticized millet 15 g
+
+Mycoticized millet 25 g	
+
+BotaniGard® 
+
+Some treatments were not replicated in all assays. 
+
 #### **STEPS TO TAKE TO COMPLETE THE ASSIGNMENT**
 
 STEP 1: Repeat analysis done in paper.
@@ -59,8 +77,8 @@ Assay_2 <- Assay_2[, 1:which(names(Assay_2)=="Mortality")]
 
 ```
 
-
-#ASSAY 1
+# **STEP 1**
+## **ASSAY 1**
 ```{r, echo = FALSE, fig.cap=cap}
 cap <- paste0(
     "**Figure 1**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms")
@@ -98,12 +116,146 @@ plot(hsd)
 ```
 
 #Despite transforming the mortality data the article reported graphics of the untransformed data
-```{r, echo = FALSE}
-dataA1 <- Assay_1 %>% select(Treatments, Mortality) 
-my_sumA1 <- dataA1 %>%
-  group_by(Treatments) %>%
-  summarise( 
-    n=n(),
-  Mean.Mortality=mean(Mortality),
-    sd=sd(Mortality)
-  ) %>%
+```{r, echo = FALSE, fig.cap=cap}
+```
+
+## **ASSAY 2**
+```{r, echo = FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 3**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms") 
+hist(Assay_2$Mortality) #Mortality of Assay 2 prior to transformation
+```
+
+
+```{r, echo=FALSE}
+Assay_2$TMortality <- asin(sqrt(Assay_2$Mortality)) #Data transformation
+
+ks.test(Assay_2$TMortality, "pnorm" )
+#transformation did not make the mortality data normal
+
+Anova.Assay2M <- aov(TMortality~Treatments, data = Assay_2)
+ks.test(Anova.Assay2M$residuals, "pnorm")
+#Transformation failed in making residuals normal
+
+Tukey2 <- TukeyHSD(Anova.Assay2M, conf.level = 0.95)
+
+library(agricolae)
+hsd2 <- agricolae::HSD.test(Anova.Assay2M, "Treatments")
+```
+
+
+```{r, echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 4**", ": Effect of different treatments on Pheritimoid earthworm mortality in Assay 2. ",
+    " Letters indicates Tukeys HSD posthoc comparisons. ",
+    " Same letter indicates non-significant differences. ")
+    
+plot(hsd2)
+
+
+```
+
+
+## **ASSAY 3**
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 5**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+hist(Assay_3$PMortality) #Mortality of Assay 3 prior to transformation
+```
+
+
+
+```{r, echo=FALSE}
+Assay_3$TMortality <- asin(sqrt(Assay_3$PMortality))
+ks.test(Assay_3$TMortality, "pnorm" )
+#Transformation did not make the data normal.
+
+Anova.Assay3M <- aov(TMortality~Treatments, data = Assay_3)
+ks.test(Anova.Assay3M$residuals, "pnorm")
+#Transformation failed in making residuals normal
+```
+
+
+```{r, echo=FALSE}
+Tukey3 <- TukeyHSD(Anova.Assay3M, conf.level = 0.95)
+
+library(agricolae)
+hsd3 <- agricolae::HSD.test(Anova.Assay3M, "Treatments")
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 6**", ": Effect of different treatments on Pheritimoid earthworm mortality. ",
+    " Letters indicates Tukeys HSD posthoc comparisons. ",
+    " Same letter indicates non-significant differences. ")
+  plot(hsd3)
+
+```
+
+#THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY DISTRIBUTED AFTER THE TRANSFORMATION
+
+#HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
+
+#IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
+
+
+# **STEP 2: KRUSKAL WALLIS ANALYSIS**
+## **ASSAY 1**
+
+```{r, echo=FALSE}
+KAssay1 <- kruskal.test(Mortality ~ Treatments, data = Assay_1)
+KAssay1 <- agricolae::kruskal(Assay_1$Mortality, Assay_1$Treatments)
+
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 6**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 1") 
+plot(KAssay1)
+#There is no difference between results obtained with the arcsine transformed data
+#and those obtained using the kruskal wallis test in Assay 1.
+
+```
+
+## **ASSAY 2**
+```{r, echo=FALSE}
+KAssay2 <- kruskal.test(Mortality ~ Treatments, data = Assay_2)
+KAssay2 <- agricolae::kruskal(Assay_2$Mortality, Assay_2$Treatments) 
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 7**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 2") 
+plot(KAssay2)
+#The Kruskal wallis test shows the differences between the various treatments
+#these differences are not visible using the tukey HSD
+```
+
+## **ASSAY 3**
+```{r, echo=FALSE}
+KAssay3 <- kruskal.test(PMortality ~ Treatments, data = Assay_3)
+KAssay3 <- agricolae::kruskal(Assay_3$PMortality, Assay_3$Treatments)
+
+```
+
+```{r,echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 8**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+plot(KAssay3)
+# For Assay3, the tukey HSD shows more differences between the means of the
+#various treatments than the kruskal wallis test.
+
+
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
