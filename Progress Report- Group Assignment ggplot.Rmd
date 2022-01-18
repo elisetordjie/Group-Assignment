@@ -1,0 +1,365 @@
+---
+title: "**Progress Report- Group Assignment**"
+author: "Elikplim Aku Setordjie, Sayesha Khanna, Abhinob Baruah and Berke Hazel Petek" 
+date: "21/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = "png", dpi = 100)
+```
+#### **ARTICLE AND DATA CHOSEN**
+[Biocontrol of invasive pheretimoid earthworms using *Beauveria bassiana*](https://peerj.com/articles/11101/#intro)
+
+[Data](https://dfzljdn9uc3pi.cloudfront.net/2021/11101/1/Raw_data_.xlsx)
+
+
+#### **AIM OF EXPERIMENT**
+
+To test the efficacy of *"Beauveria bassiana"* as a biocontrol agent on pheritimoid earthworms.
+
+#### **HYPOTHESIS**
+
+H0 : There is no significant difference between earthworms treated with *B.bassiana* and earthworms that were not treated with it.
+
+HA : There is a significant difference between earthworms treated with *B.bassiana* and earthworms that were not treated with it.
+
+#### **VARIABLES**
+
+Dependent variables: Mortality, Survival 
+
+Independent variables: Treatments, Time 
+
+#### **TREATMENTS**
+
+C1:Water
+
+C2:Millet 15 grams
+
+C3:Millet 25 grams
+
+B. bassiana 108 conidia/mL
+
+Mycoticized millet 15 g
+
+Mycoticized millet 25 g	
+
+BotaniGard® 
+
+Some treatments were not replicated in all assays. 
+
+#### **STEPS TO TAKE TO COMPLETE THE ASSIGNMENT**
+
+STEP 1: Repeat analysis done in paper.
+
+STEP 2: Re analyse the data using the most appropriate analysis in your opinion.
+
+STEP 3: Analyse data taking time into consideration.
+
+STEP 4: Improve upon the graphics of the paper.
+
+
+```{r, echo = FALSE, include=FALSE}
+#Importing data
+library("readxl")      
+Assay_1 <- read.csv("data/Assay 1.csv")
+Assay_2 <- read.csv("data/Assay 2.csv")
+Assay_3 <- read.csv("data/Assay 3.csv")
+names(Assay_1) <- c("Treatments","Replication","Survivals","AdultNO",      
+                   "Adult","Mortality")
+names(Assay_2) <- c("Treatments","No.of.earthworms","Earthworm.weight.g","No.of.adult",
+                    "Date","Group","Adults","Mortality")                
+Assay_3
+names(Assay_3) <- c("Treatments","Survivals","AdultsNO","Date","DayCount",
+                 "Adults","Mortality","PMortality")
+
+Assay_2 <- Assay_2[, 1:which(names(Assay_2)=="Mortality")]
+
+
+```
+
+# **STEP 1**
+## **ASSAY 1**
+```{r, echo = FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 1**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms")
+hist(Assay_1$Mortality)   # Shape of data prior to transformation
+
+```
+
+```{r, echo = FALSE}
+Assay_1$TMortality <- asin(sqrt(Assay_1$Mortality)) #Transforming data 
+
+ks.test(Assay_1$TMortality, "pnorm" )      #Checking for normality
+#Transformation did not make mortality data normal
+```
+
+
+```{r, echo = FALSE}
+Anova.Assay1M <- aov(TMortality~Treatments, data = Assay_1)
+ks.test(Anova.Assay1M$residuals, "pnorm")    #Checking for normality of residuals
+#Transformation did not make residuals normal
+
+Tukey1 <- TukeyHSD(Anova.Assay1M, conf.level = 0.95)
+library(agricolae)
+hsd <- agricolae::HSD.test(Anova.Assay1M, "Treatments")
+
+L <- hsd$groups$groups[order(row.names(hsd$groups))]
+
+```
+
+
+
+```{r plot-anova, echo = FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 2**", ": Effect of different treatments on Pheritimoid earthworm mortality. ",
+    " Letters indicates Tukeys HSD posthoc comparisons. ",
+    " Same letter indicates non-significant differences. ")
+    
+plot(hsd)
+```
+```{r}
+d0 <- data.frame(l= L,Treatments=levels(factor(Assay_1$Treatments)))
+
+
+
+ggplot(Assay_1, aes(x=Treatments, y=TMortality, fill=Treatments ))+
+  geom_boxplot()+
+  geom_text(data=d0, aes(x= Treatments, y=1.7, label=l))          
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 3**", ":Mortality of the various treatments in Assay 1 (+/- SE) ") 
+
+```
+
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+```{r, echo = FALSE, fig.cap=cap}
+data_summary <- aggregate(Mortality ~ Treatments, data = Assay_1,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$Mortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_1, aes(Mortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
+```
+
+
+## **ASSAY 2**
+```{r, echo = FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 4**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms") 
+hist(Assay_2$Mortality) #Mortality of Assay 2 prior to transformation
+```
+
+
+```{r, echo=FALSE}
+Assay_2$TMortality <- asin(sqrt(Assay_2$Mortality)) #Data transformation
+
+ks.test(Assay_2$TMortality, "pnorm" )
+#transformation did not make the mortality data normal
+
+Anova.Assay2M <- aov(TMortality~Treatments, data = Assay_2)
+ks.test(Anova.Assay2M$residuals, "pnorm")
+#Transformation failed in making residuals normal
+
+Tukey2 <- TukeyHSD(Anova.Assay2M, conf.level = 0.95)
+
+library(agricolae)
+hsd2 <- agricolae::HSD.test(Anova.Assay2M, "Treatments")
+```
+
+
+```{r, echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 5**", ": Effect of different treatments on Pheritimoid earthworm mortality in Assay 2. ",
+    " Letters indicates Tukeys HSD posthoc comparisons. ",
+    " Same letter indicates non-significant differences. ")
+    
+plot(hsd2)
+```
+
+
+```{r, echo=FALSE,fig.cap=cap}
+L <-  hsd2$groups$groups[order(row.names(hsd2$groups))]
+d0 <- data.frame(l= L,Treatments=levels(factor(Assay_2$Treatments)))
+
+
+
+ggplot(Assay_2, aes(x=Treatments, y=TMortality, fill=Treatments ))+
+  geom_boxplot()+
+  geom_text(data=d0, aes(x= Treatments, y=1.3, label=l))   
+
+
+```
+
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 6**", ": Mortality of earthworms in the various treatments(+/-SE)")
+```
+
+```{r, echo=FALSE, fig.cap=cap}
+data_summary <- aggregate(Mortality ~ Treatments, data = Assay_2,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$Mortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_2, aes(Mortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
+
+```
+
+## **ASSAY 3**
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 7**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+hist(Assay_3$PMortality) #Mortality of Assay 3 prior to transformation
+```
+
+
+
+```{r, echo=FALSE}
+Assay_3$TMortality <- asin(sqrt(Assay_3$PMortality))
+ks.test(Assay_3$TMortality, "pnorm" )
+#Transformation did not make the data normal.
+
+Anova.Assay3M <- aov(TMortality~Treatments, data = Assay_3)
+ks.test(Anova.Assay3M$residuals, "pnorm")
+#Transformation failed in making residuals normal
+```
+
+
+```{r, echo=FALSE}
+Tukey3 <- TukeyHSD(Anova.Assay3M, conf.level = 0.95)
+
+library(agricolae)
+hsd3 <- agricolae::HSD.test(Anova.Assay3M, "Treatments")
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 8**", ": Effect of different treatments on Pheritimoid earthworm mortality. ",
+    " Letters indicates Tukeys HSD posthoc comparisons. ",
+    " Same letter indicates non-significant differences. ")
+  plot(hsd3)
+
+```
+```{r}
+
+L <-  hsd3$groups$groups[order(row.names(hsd3$groups))]
+d0 <- data.frame(l= L,Treatments=levels(factor(Assay_3$Treatments)))
+
+
+
+ggplot(Assay_3, aes(x=Treatments, y=TMortality, fill=Treatments ))+
+  geom_boxplot()+
+  geom_text(data=d0, aes(x= Treatments, y=1.7, label=l))   
+
+
+
+```
+
+#Despite transforming the mortality data the article reported graphics of the untransformed data
+
+```{r, echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 9**", ": Mortality of Earthworms in Various Treatments (+/-)")
+```
+
+```{r,echo=FALSE,fig.cap= cap}
+data_summary <- aggregate(PMortality ~ Treatments, data = Assay_3,       # Create summary data
+                          function(x) c(mean = mean(x),
+                                        se = sd(x) / sqrt(length(x))))
+data_summary <- data.frame(group = data_summary[ , 1], data_summary$PMortality)
+data_summary                                          # Print summary data
+
+library(ggplot2)
+ggplot(Assay_3, aes(PMortality, Treatments, fill = Treatments)) +      # ggplot2 barplot with error bars
+  coord_flip() +
+  stat_summary(geom = "bar", fun = mean, position = "dodge") +
+  stat_summary(geom = "errorbar", fun.data = mean_se, position = "dodge")
+
+
+```
+
+#### THE MORTALITY DATA IN ALL ASSAYS FAILED TO BECOME NORMALLY DISTRIBUTED AFTER THE TRANSFORMATION
+
+#### HENCE THE MOST APPROPRAITE TEST THAT SHOULD HAVE BEEN USED TO ANALYSE THIS DATA
+
+#### IS A NONE PARAMETRIC TEST LIKE THE KRUSKAL WALLIS TEST
+
+
+# **STEP 2: KRUSKAL WALLIS ANALYSIS**
+## **ASSAY 1**
+
+```{r, echo=FALSE}
+KAssay1 <- kruskal.test(Mortality ~ Treatments, data = Assay_1)
+KAssay1 <- agricolae::kruskal(Assay_1$Mortality, Assay_1$Treatments)
+
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 10**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 1") 
+plot(KAssay1)
+#There is no difference between results obtained with the arcsine transformed data
+#and those obtained using the kruskal wallis test in Assay 1.
+
+```
+
+## **ASSAY 2**
+```{r, echo=FALSE}
+KAssay2 <- kruskal.test(Mortality ~ Treatments, data = Assay_2)
+KAssay2 <- agricolae::kruskal(Assay_2$Mortality, Assay_2$Treatments) 
+```
+
+
+```{r, echo=FALSE, fig.cap=cap}
+cap <- paste0(
+    "**Figure 11**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 2") 
+plot(KAssay2)
+#The Kruskal wallis test shows the differences between the various treatments
+#these differences are not visible using the tukey HSD
+```
+
+## **ASSAY 3**
+```{r, echo=FALSE}
+KAssay3 <- kruskal.test(PMortality ~ Treatments, data = Assay_3)
+KAssay3 <- agricolae::kruskal(Assay_3$PMortality, Assay_3$Treatments)
+
+```
+
+```{r,echo=FALSE,fig.cap=cap}
+cap <- paste0(
+    "**Figure 12**", ": Effect of different treatments on the Mortality of Pheritimoid Earthworms in Assay 3") 
+plot(KAssay3)
+# For Assay3, the tukey HSD shows more differences between the means of the
+#various treatments than the kruskal wallis test.
+
+
+```
+
+# **STEP 3**
+```{r}
+
+
+```
+
+
+```{r}
+```
+
