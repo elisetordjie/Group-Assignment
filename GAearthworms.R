@@ -45,12 +45,16 @@ library(agricolae)
 hsd <- agricolae::HSD.test(Anova.Assay1M, "Treatments")
 
 levels(factor(Assay_1$Treatments))
+letters.ordered <- hsd$groups$groups[order(row.names(hsd$groups))]
 hsd
 plot(hsd)
-
+plot(Mortality ~ Treatments, data = Assay_1, ylim = c(0, 27))     
+text(x = 1:6, y = 27, letters.ordered, cex = 2, col = "blue")
 
 
 #Despite transforming the mortality data the article reported graphics of the untransformed data
+library(ggplot2)
+library(dplyr)
 dataA1 <- Assay_1 %>% select(Treatments, Mortality) 
 my_sumA1 <- dataA1 %>%
   group_by(Treatments) %>%
@@ -184,6 +188,20 @@ plot(KAssay3)
 # For Assay3, the tukey HSD shows more differences between the means of the
 #various treatments than the kruskal wallis test.
 
+T2 <- lm(Mortality~Date,Treatments, data = Assay_2)
+summary(T2)
+Assay_2$Date <- factor(Assay_2$Date)
+Assay_2$Treatments <- factor(Assay_2$Treatments)
 
+plot(Mortality~Date, col=Treatments, data = Assay_2)
+library(dplyr)
+df2 <- Assay_2 %>% 
+  group_by(Date, Treatments) %>% 
+  summarise(MMortality=mean(Mortality))
+
+library(ggplot2)
+ggplot(df2,aes(x=Date, y=MMortality, col= Treatments, group= Treatments))+
+  geom_point()+
+  geom_line()
 
 
